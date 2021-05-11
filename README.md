@@ -1,79 +1,42 @@
 ---
-title: 1306. Jump Game III
+title:  1.Two Sum
 tags: Leetcode,2021
 ---
-# 【LeetCode】1306.Jump Game III 
+# 【LeetCode】 1. Two Sum
 ## Description
->Given an array of non-negative integers arr, you are initially positioned at start index of the array. When you are at index i, you can jump to i + arr[i] or i - arr[i], check if you can reach to any index with value 0.
+>Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
 
->Notice that you can not jump outside of the array at any time.
+>給予一整數陣列，請回傳陣列中兩個索引值，其值相加等於目標值。
+你可以假設陣列中只會有一個解，不需要考慮有兩種或以上的情況。
 
- 
-## Example
-```
-Example 1:
-
-Input: arr = [4,2,3,0,3,1,2], start = 5
-Output: true
-Explanation: 
-All possible ways to reach at index 3 with value 0 are: 
-index 5 -> index 4 -> index 1 -> index 3 
-index 5 -> index 6 -> index 4 -> index 1 -> index 3 
-Example 2:
-
-Input: arr = [4,2,3,0,3,1,2], start = 0
-Output: true 
-Explanation: 
-One possible way to reach at index 3 with value 0 is: 
-index 0 -> index 4 -> index 1 -> index 3
-Example 3:
-
-Input: arr = [3,0,2,1,2], start = 2
-Output: false
-Explanation: There is no way to reach at index 1 with value 0.
- 
-```
-
-## Constraints:
-
-```
-1 <= arr.length <= 5 * 104
-0 <= arr[i] < arr.length
-0 <= start < arr.length
-```
+## Example:
+>Given nums = [2, 7, 11, 15], target = 9,
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+Solution
+使用hash table的做法加速，只需要跑一次for loop即可解決。
+以測資為例，第一個遇到2且目標為9，將第7(9-2)格放入0，意思是之後遇到7時，去找第7格就知道要跟哪一格相加了。
 ## Code
 ```
 public class Solution {
-   public bool CanReach(int[] arr, int start)
+    public int[] TwoSum(int[] nums, int target) {
+        
+      
+          if(nums == null || nums.Length < 2)
+            return new int[2];
+        Dictionary<int,int> dic = new Dictionary<int,int>();
+        
+        for(int i = 0; i < nums.Length; i++)
         {
-            Queue<int> bfs = new Queue<int>();
-            ISet<int> visited = new HashSet<int>();
-
-            bfs.Enqueue(start);
-            visited.Add(start);
-
-            while (bfs.Count > 0)
-            {
-                var idx = bfs.Dequeue();
-                if (arr[idx] == 0)
-                {
-                    return true;
-                }
-
-                var newIdx = idx + arr[idx];
-                if (newIdx >= 0 && newIdx < arr.Length && visited.Add(newIdx))
-                {
-                    bfs.Enqueue(newIdx);
-                }
-
-                newIdx = idx - arr[idx];
-                if (newIdx >= 0 && newIdx < arr.Length && visited.Add(newIdx))
-                {
-                    bfs.Enqueue(newIdx);
-                }
-            }
-
-            return false;
+            if(dic.ContainsKey(target - nums[i]))
+                return new int[]{i, dic[target - nums[i]]};
+            else if(!dic.ContainsKey(nums[i]))
+                dic.Add(nums[i], i);
         }
+        
+        return new int[2];
+    }
 }
 ```
+### tags: LeetCode C#
