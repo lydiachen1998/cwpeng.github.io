@@ -1,42 +1,73 @@
 ---
-title:  1.Two Sum
+title: 35.Search Insert Position
 tags: Leetcode,2021
 ---
-# 【LeetCode】 1. Two Sum
+# 【LeetCode】35. Search Insert Position
 ## Description
->Given an array of integers, return indices of the two numbers such that they add up to a specific target.
-You may assume that each input would have exactly one solution, and you may not use the same element twice.
+>Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+You may assume no duplicates in the array.
 
->給予一整數陣列，請回傳陣列中兩個索引值，其值相加等於目標值。
-你可以假設陣列中只會有一個解，不需要考慮有兩種或以上的情況。
+>給一個排序過的陣列和一個目標數字，如果目標在陣列中，回傳它的索引值；否則請回傳它應該被插入的位置。
 
 ## Example:
->Given nums = [2, 7, 11, 15], target = 9,
-Because nums[0] + nums[1] = 2 + 7 = 9,
-return [0, 1].
-Solution
-使用hash table的做法加速，只需要跑一次for loop即可解決。
-以測資為例，第一個遇到2且目標為9，將第7(9-2)格放入0，意思是之後遇到7時，去找第7格就知道要跟哪一格相加了。
+```
+Example 1:
+
+Input: [1,3,5,6], 5
+Output: 2
+
+
+Example 2:
+
+Input: [1,3,5,6], 2
+Output: 1
+
+
+Example 3:
+
+Input: [1,3,5,6], 7
+Output: 4
+
+
+Example 4:
+
+Input: [1,3,5,6], 0
+Output: 0
+```
+## Solution
+
+## Constraints:
+
+```
+1 <= nums.length <= 104
+-104 <= nums[i] <= 104
+nums contains distinct values sorted in ascending order.
+-104 <= target <= 104
+```
 ## Code
 ```
 public class Solution {
-    public int[] TwoSum(int[] nums, int target) {
+    public int SearchInsert(int[] nums, int target) {
+         if (nums == null || nums.Length == 0)
+            return -1;
         
-      
-          if(nums == null || nums.Length < 2)
-            return new int[2];
-        Dictionary<int,int> dic = new Dictionary<int,int>();
+        int i = 0,
+            j = nums.Length - 1;
         
-        for(int i = 0; i < nums.Length; i++)
+        while (i <= j)
         {
-            if(dic.ContainsKey(target - nums[i]))
-                return new int[]{i, dic[target - nums[i]]};
-            else if(!dic.ContainsKey(nums[i]))
-                dic.Add(nums[i], i);
+            int m = j + (i - j) / 2;
+            
+            if (nums[m] == target)
+                return m;
+            else if (nums[m] < target)
+                i = m + 1;
+            else
+                j = m - 1;
         }
         
-        return new int[2];
+        return i;
+    
     }
 }
 ```
-### tags: LeetCode C#
